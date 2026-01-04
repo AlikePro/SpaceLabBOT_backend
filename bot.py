@@ -1,4 +1,5 @@
 from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
 from aiogram.types import WebAppInfo
 import asyncio
 import os
@@ -8,10 +9,11 @@ TOKEN = os.getenv("BOT_TOKEN")
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-@dp.message(commands=["start"])
+# Хендлер для команды /start
+@dp.message(Command("start"))
 async def start(message: types.Message):
     kb = types.InlineKeyboardMarkup(
-        inline_keyboard=[[
+        inline_keyboard=[[ 
             types.InlineKeyboardButton(
                 text="🚀 Open Mini App",
                 web_app=WebAppInfo(
@@ -23,6 +25,7 @@ async def start(message: types.Message):
     await message.answer("Open the app 👇", reply_markup=kb)
 
 async def main():
+    # запускаем polling
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
